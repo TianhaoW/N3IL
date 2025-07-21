@@ -4,6 +4,7 @@
 #include <limits>
 #include <mutex>
 #include <thread>
+#include <functional>
 
 #include "no_three_in_line.h"
 #include "symmetry_utils.h"
@@ -22,9 +23,12 @@ void threaded_dfs(NoThreeInLine& env, int n, std::set<std::vector<Point>>& visit
         if (env.points().size() < best_size) {
             best_solution = env.points();
             best_size = best_solution.size();
+            std::cout << "updating the best to " << best_size << std::endl;
         }
         return;
     }
+
+    if (env.points().size() >= best_size) return; //pruning
 
     auto canon = canonical_form(env.points(), n);
     if (visited.count(canon)) return;
