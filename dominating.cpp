@@ -130,7 +130,7 @@ void find_largest_with_symmetry(int n, char symmetry, std::vector<NoThreeInLine:
                 }
             }
             dfs();
-            for (size_t i = 0; i < sym_points.size(); ++i) env.remove_point();
+            for (size_t i = 0; i < added_points.size(); ++i) env.remove_point();
         }
     };
 
