@@ -31,3 +31,99 @@ std::vector<Point> canonical_form(const std::vector<Point>& points, int n) {
     auto transforms = generate_D8_transforms(points, n);
     return *std::min_element(transforms.begin(), transforms.end());
 }
+
+static Point rotate90(const Point& p, int n) {
+    return {p.second, n - 1 - p.first};
+}
+
+static Point rotate180(const Point& p, int n) {
+    return {n - 1 - p.first, n - 1 - p.second};
+}
+
+static Point rotate270(const Point& p, int n) {
+    return {n - 1 - p.second, p.first};
+}
+
+static Point reflect_x(const Point& p, int n) {
+    return {p.first, n - 1 - p.second};
+}
+
+static Point reflect_y(const Point& p, int n) {
+    return {n - 1 - p.first, p.second};
+}
+
+static Point reflect_diag(const Point& p, int n) { // y = x
+    return {p.second, p.first};
+}
+
+static Point reflect_anti_diag(const Point& p, int n) { // y = -x
+    return {n - 1 - p.second, n - 1 - p.first};
+}
+
+std::vector<Point> d8_symmetries(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+
+    unique.insert(p);
+    unique.insert(rotate90(p, n));
+    unique.insert(rotate180(p, n));
+    unique.insert(rotate270(p, n));
+    unique.insert(reflect_x(p, n));
+    unique.insert(reflect_y(p, n));
+    unique.insert(reflect_diag(p, n));
+    unique.insert(reflect_anti_diag(p, n));
+
+    return std::vector<Point>(unique.begin(), unique.end());
+}
+
+std::vector<Point> rotation_180_symmetry(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+    unique.insert(p);
+    unique.insert(rotate180(p, n));
+    return std::vector<Point>(unique.begin(), unique.end());
+}
+
+std::vector<Point> reflection_x_symmetry(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+    unique.insert(p);
+    unique.insert(reflect_x(p, n));
+    return std::vector<Point>(unique.begin(), unique.end());
+}
+
+std::vector<Point> reflection_y_symmetry(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+    unique.insert(p);
+    unique.insert(reflect_y(p, n));
+    return std::vector<Point>(unique.begin(), unique.end());
+}
+
+std::vector<Point> reflection_xy_symmetry(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+    unique.insert(p);
+    unique.insert(reflect_y(p, n));
+    unique.insert(reflect_x(p, n));
+    unique.insert(rotate180(p, n));
+    return std::vector<Point>(unique.begin(), unique.end());
+}
+
+std::vector<Point> reflection_diag_symmetry(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+    unique.insert(p);
+    unique.insert(reflect_diag(p, n));
+    return std::vector<Point>(unique.begin(), unique.end());
+}
+
+std::vector<Point> reflection_anti_diag_symmetry(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+    unique.insert(p);
+    unique.insert(reflect_anti_diag(p, n));
+    return std::vector<Point>(unique.begin(), unique.end());
+}
+
+std::vector<Point> rotation_90_symmetry(const Point& p, int n) {
+    std::unordered_set<Point, PointHash> unique;
+    unique.insert(p);
+    unique.insert(rotate90(p, n));
+    unique.insert(rotate180(p, n));
+    unique.insert(rotate270(p, n));
+    return std::vector<Point>(unique.begin(), unique.end());
+}
